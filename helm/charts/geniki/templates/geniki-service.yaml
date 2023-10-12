@@ -1,0 +1,15 @@
+{{- if .Values.geniki.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: geniki-tracker-service
+spec:
+  type: ClusterIP
+  selector:
+    app: geniki-tracker
+  ports:
+    - protocol: TCP
+      port: {{ .Values.global.tracker_port }}
+      targetPort: {{ .Values.global.tracker_port }}
+    
+{{- end }}

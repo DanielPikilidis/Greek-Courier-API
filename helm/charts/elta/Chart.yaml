@@ -1,0 +1,4 @@
+apiVersion: v2
+name: elta-tracker
+version: 0.1.0
+description: A helm chart for the elta tracker

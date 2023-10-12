@@ -1,0 +1,17 @@
+easymail:
+  enabled: true
+  use_proxy: false
+  name: easymail-tracker
+  image:
+    repository: dpikilidis/easymail-tracker
+    tag: latest
+  logname: easymail-tracker.log
+  loglevel: INFO
+
+autoscaling:
+  horizontal:
+    min_replicas: 2
+    max_replicas: 20
+  vertical:
+    enabled: false
+    mode: "Off"  # Possible values: "Auto", "Off", "Initial", "Recreate""  

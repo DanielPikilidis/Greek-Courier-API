@@ -1,0 +1,44 @@
+{{- if .Values.easymail.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easymail-tracker-deployment
+  labels:
+    app: easymail-tracker
+spec:
+  selector:
+    matchLabels:
+      app: easymail-tracker
+  template:
+    metadata:
+      labels:
+        app: easymail-tracker
+    spec:
+      containers:
+      - name: easymail-tracker-container
+        image: {{ .Values.easymail.image.repository }}:{{ .Values.easymail.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.tracker_port }}
+        resources:
+          requests:
+            cpu: "40m"
+            memory: "60M"
+          limits:
+            cpu: "50m"
+            memory: "80M"
+        env:
+        - name: PORT
+          value: "{{ .Values.global.tracker_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.easymail.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.easymail.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.easymail.loglevel }}
+        - name: "PM_PORT"
+          value: "{{ .Values.global.pm_port }}"
+        - name: "USE_PROXY"
+          value: "{{ .Values.easymail.use_proxy }}"
+
+{{- end }}

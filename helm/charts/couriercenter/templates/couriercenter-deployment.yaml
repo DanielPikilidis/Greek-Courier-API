@@ -1,0 +1,44 @@
+{{- if .Values.couriercenter.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couriercenter-tracker-deployment
+  labels:
+    app: couriercenter-tracker
+spec:
+  selector:
+    matchLabels:
+      app: couriercenter-tracker
+  template:
+    metadata:
+      labels:
+        app: couriercenter-tracker
+    spec:
+      containers:
+      - name: couriercenter-tracker-container
+        image: {{ .Values.couriercenter.image.repository }}:{{ .Values.couriercenter.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.tracker_port }}
+        resources:
+          requests:
+            cpu: "60m"
+            memory: "60M"
+          limits:
+            cpu: "80m"
+            memory: "80M"
+        env:
+        - name: PORT
+          value: "{{ .Values.global.tracker_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.couriercenter.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.couriercenter.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.couriercenter.loglevel }}
+        - name: "PM_PORT"
+          value: "{{ .Values.global.pm_port }}"
+        - name: "USE_PROXY"
+          value: "{{ .Values.couriercenter.use_proxy }}"
+
+{{- end }}

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main-api-deployment
+  labels:
+    app: main-api
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      app: main-api
+  template:
+    metadata:
+      labels:
+        app: main-api
+    spec:
+      containers:
+      - name: main-api-container
+        image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.api_port }}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "20M"
+          limits:
+            cpu: "30m"
+            memory: "40M"
+        env:
+        - name: GIN_MODE
+          value: "release"
+        - name: PORT
+          value: "{{ .Values.global.api_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.api.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.api.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.api.loglevel }}
+        - name: REDIS_ENABLED
+          value: "{{ .Values.global.redis.enabled }}"
+        - name: REDIS_ADDRESS
+          value: {{ .Values.global.redis.address }}
+        - name: REDIS_PORT
+          value: "{{ .Values.global.redis.port }}"
+        - name: REDIS_PASSWORD
+          value: "{{ .Values.global.redis.password }}"
+        - name: REDIS_CACHE_DURATION
+          value: "{{ .Values.global.redis.cache_duration }}"

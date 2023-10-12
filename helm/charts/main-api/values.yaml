@@ -1,0 +1,17 @@
+api:
+  name: main-api
+  image:
+    repository: dpikilidis/main-api
+    tag: latest
+  replicas: 2
+  logpath: /tmp
+  logname: main-api.log
+  loglevel: INFO
+
+autoscaling:
+  horizontal:
+    min_replicas: 2
+    max_replicas: 20
+  vertical:
+    enabled: false
+    mode: "Off"  # Possible values: "Auto", "Off", "Initial", "Recreate""  

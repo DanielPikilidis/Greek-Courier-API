@@ -1,0 +1,13 @@
+pm:
+  enabled: false
+  secret_name: proxy-list-secret
+  filepath: /config
+  filename: proxy_list.json
+  image:
+    repository: dpikilidis/proxy-manager
+    tag: latest
+  logpath: /tmp
+  logname: proxy-manager.log
+  loglevel: INFO
+  # Temporary solution to pass a proxy list
+  base64_proxies: ""

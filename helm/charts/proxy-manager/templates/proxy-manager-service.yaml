@@ -1,0 +1,15 @@
+{{- if .Values.pm.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-manager-service
+spec:
+  type: ClusterIP
+  selector:
+    app: proxy-manager
+  ports:
+    - protocol: TCP
+      port: {{ .Values.global.pm_port }}
+      targetPort: {{ .Values.global.pm_port }}
+
+{{- end }}

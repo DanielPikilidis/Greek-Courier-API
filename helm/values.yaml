@@ -1,0 +1,13 @@
+global:
+  api_port: 80  # The internal api port
+  tracker_port: 80  # The port the the apps will use internally to communicate
+  pm_port: 80 # The port the proxy manager will use internally to communicate
+  node_port: 30000 # The port we will use to access the api.
+  
+  redis:
+    enabled: true
+    address: redis-service
+    port: 6379
+    password: ""
+    # Cache duration in minutes
+    cache_duration: 5

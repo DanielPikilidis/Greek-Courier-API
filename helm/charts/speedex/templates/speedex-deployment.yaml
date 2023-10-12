@@ -1,0 +1,44 @@
+{{- if .Values.speedex.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: speedex-tracker-deployment
+  labels:
+    app: speedex-tracker
+spec:
+  selector:
+    matchLabels:
+      app: speedex-tracker
+  template:
+    metadata:
+      labels:
+        app: speedex-tracker
+    spec:
+      containers:
+      - name: speedex-tracker-container
+        image: {{ .Values.speedex.image.repository }}:{{ .Values.speedex.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.tracker_port }}
+        resources:
+          requests:
+            cpu: "40m"
+            memory: "60M"
+          limits:
+            cpu: "50m"
+            memory: "80M"
+        env:
+        - name: PORT
+          value: "{{ .Values.global.tracker_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.speedex.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.speedex.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.speedex.loglevel }}
+        - name: "PM_PORT"
+          value: "{{ .Values.global.pm_port }}"
+        - name: "USE_PROXY"
+          value: "{{ .Values.speedex.use_proxy }}"
+
+{{- end }}

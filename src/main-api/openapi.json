@@ -1,0 +1,166 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Courier API",
+        "description": "Free to use courier API for Greek couriers"
+    },
+    "host": "courier-api-test.danielpikilidis.com",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/track-one/{courier_name}/{tracking_id}": {
+            "get": {
+                "tags": [
+                    "Tracking"
+                ],
+                "summary": "Track one shipment",
+                "description": "Track one shipment",
+                "parameters": [
+                    {
+                        "name": "courier_name",
+                        "in": "path",
+                        "description": "Courier name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "tracking_id",
+                        "in": "path",
+                        "description": "Tracking ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tracking information",
+                        "schema": {
+                            "$ref": "#/definitions/TrackingResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/track-many/{courier_name}/{tracking_ids}": {
+            "get": {
+                "tags": [
+                    "Tracking"
+                ],
+                "summary": "Track many shipments",
+                "description": "Track many shipments",
+                "parameters": [
+                    {
+                        "name": "courier_name",
+                        "in": "path",
+                        "description": "Courier name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "tracking_ids",
+                        "in": "path",
+                        "description": "Tracking IDs separated with \"&\". eg. \"tracking_id1&tracking_id2&tracking_id3\"",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tracking information",
+                        "schema": {
+                            "$ref": "#/definitions/TrackingResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "TrackingResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "description": "Indicates whether the tracking was successful. This doesn't mean that the id was valid, but rather that there were no errors during the tracking process."
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "{tracking_id}": {
+                            "type": "object",
+                            "properties": {
+                                "found": {
+                                    "type": "boolean",
+                                    "description": "Indicates if the tracking information was found."
+                                },
+                                "courier_name": {
+                                    "type": "string",
+                                    "description": "Name of the courier."
+                                },
+                                "courier_icon": {
+                                    "type": "string",
+                                    "format": "url",
+                                    "description": "URL to the courier's icon."
+                                },
+                                "locations": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "datetime": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "Date and time of the event."
+                                            },
+                                            "location": {
+                                                "type": "string",
+                                                "description": "Location information."
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "description": "Description of the event."
+                                            }
+                                        }
+                                    },
+                                    "description": "List of tracking events."
+                                },
+                                "delivered": {
+                                    "type": "boolean",
+                                    "description": "Indicates if the shipment has been delivered."
+                                }
+                            }
+                        }
+                    }
+                },
+                "error": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "description": "Error code, if applicable."
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "Error message, if applicable."
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

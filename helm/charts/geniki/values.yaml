@@ -1,0 +1,16 @@
+geniki:
+  enabled: true
+  use_proxy: false
+  image:
+    repository: dpikilidis/geniki-tracker
+    tag: latest
+  logname: geniki-tracker.log
+  loglevel: INFO
+
+autoscaling:
+  horizontal:
+    min_replicas: 2
+    max_replicas: 20
+  vertical:
+    enabled: false
+    mode: "Off"  # Possible values: "Auto", "Off", "Initial", "Recreate""  

@@ -1,0 +1,18 @@
+couriercenter:
+  enabled: true
+  use_proxy: false
+  name: couriercenter-tracker
+  image:
+    repository: dpikilidis/couriercenter-tracker
+    tag: latest
+  logpath: /tmp
+  logname: couriercenter-tracker.log
+  loglevel: INFO
+
+autoscaling:
+  horizontal:
+    min_replicas: 2
+    max_replicas: 20
+  vertical:
+    enabled: false
+    mode: "Off"  # Possible values: "Auto", "Off", "Initial", "Recreate""  

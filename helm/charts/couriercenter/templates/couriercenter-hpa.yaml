@@ -1,0 +1,20 @@
+{{- if .Values.couriercenter.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: couriercenter-tracker-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: couriercenter-tracker-deployment
+  minReplicas: {{ .Values.autoscaling.horizontal.min_replicas }}
+  maxReplicas: {{ .Values.autoscaling.horizontal.max_replicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+{{- end }}

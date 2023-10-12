@@ -1,0 +1,44 @@
+{{- if .Values.skroutz.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skroutz-tracker-deployment
+  labels:
+    app: skroutz-tracker
+spec:
+  selector:
+    matchLabels:
+      app: skroutz-tracker
+  template:
+    metadata:
+      labels:
+        app: skroutz-tracker
+    spec:
+      containers:
+      - name: skroutz-tracker-container
+        image: {{ .Values.skroutz.image.repository }}:{{ .Values.skroutz.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.tracker_port }}
+        resources:
+          requests:
+            cpu: "6m"
+            memory: "15M"
+          limits:
+            cpu: "15m"
+            memory: "20M"
+        env:
+        - name: PORT
+          value: "{{ .Values.global.tracker_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.skroutz.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.skroutz.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.skroutz.loglevel }}
+        - name: PM_PORT
+          value: "{{ .Values.global.pm_port }}"
+        - name: USE_PROXY
+          value: "{{ .Values.skroutz.use_proxy }}"
+
+{{- end }}

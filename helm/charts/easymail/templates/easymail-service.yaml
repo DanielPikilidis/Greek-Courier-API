@@ -1,0 +1,15 @@
+{{- if .Values.easymail.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: easymail-tracker-service
+spec:
+  type: ClusterIP
+  selector:
+    app: easymail-tracker
+  ports:
+    - protocol: TCP
+      port: {{ .Values.global.tracker_port }}
+      targetPort: {{ .Values.global.tracker_port }}
+
+{{- end }}

@@ -1,0 +1,57 @@
+{{- if .Values.acs.enabled }}
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: acs-tracker-deployment-restart
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: acs-tracker-deployment-restart
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["acs-tracker-deployment"]
+    verbs: ["get", "patch", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: acs-tracker-deployment-restart
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: acs-tracker-deployment-restart
+subjects:
+  - kind: ServiceAccount
+    name: acs-tracker-deployment-restart
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: acs-tracker-deployment-restart
+spec:
+  concurrencyPolicy: Forbid
+  schedule: '0 * * * *' # every 1 hour
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: acs-tracker-deployment-restart
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl
+              command:
+              - bash
+              - -c
+              - >-
+                kubectl rollout restart deployment/acs-tracker-deployment &&
+                kubectl rollout status deployment/acs-tracker-deployment
+
+{{- end }}

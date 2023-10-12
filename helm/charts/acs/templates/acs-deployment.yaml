@@ -1,0 +1,53 @@
+{{- if .Values.acs.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acs-tracker-deployment
+  labels:
+    app: acs-tracker
+spec:
+  selector:
+    matchLabels:
+      app: acs-tracker
+  template:
+    metadata:
+      labels:
+        app: acs-tracker
+    spec:
+      containers:
+      - name: acs-tracker-container
+        image: {{ .Values.acs.image.repository }}:{{ .Values.acs.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.tracker_port }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.global.tracker_port }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "500M"
+          limits:
+            cpu: "3000m"
+            memory: "1000M"
+        env:
+        - name: PORT
+          value: "{{ .Values.global.tracker_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.acs.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.acs.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.acs.loglevel }}
+        - name: PM_PORT
+          value: "{{ .Values.global.pm_port }}"
+        - name: USE_PROXY
+          value: "{{ .Values.acs.use_proxy }}"
+
+{{- end }}

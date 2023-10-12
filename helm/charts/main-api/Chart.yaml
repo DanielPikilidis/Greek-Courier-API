@@ -1,0 +1,4 @@
+apiVersion: v2
+name: main-api
+version: 0.1.0
+description: A helm chart for the main api

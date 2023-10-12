@@ -1,0 +1,4 @@
+apiVersion: v2
+name: proxy-manager
+version: 0.1.0
+description: A helm chart for the proxy-manager

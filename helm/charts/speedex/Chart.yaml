@@ -1,0 +1,4 @@
+apiVersion: v2
+name: speedex-tracker
+version: 0.1.0
+description: A helm chart for the speedex tracker

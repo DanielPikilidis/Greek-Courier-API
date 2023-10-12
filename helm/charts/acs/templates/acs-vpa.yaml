@@ -1,0 +1,17 @@
+{{- if and .Values.acs.enabled .Values.autoscaling.vertical.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: acs-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment
+    name:       acs-tracker-deployment
+  updatePolicy:
+    updateMode: "{{ .Values.autoscaling.vertical.mode }}"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "*"
+        controlledResources: ["cpu", "memory"]
+{{- end }}

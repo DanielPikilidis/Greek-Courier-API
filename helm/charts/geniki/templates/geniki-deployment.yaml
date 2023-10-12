@@ -1,0 +1,44 @@
+{{- if .Values.geniki.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geniki-tracker-deployment
+  labels:
+    app: geniki-tracker
+spec:
+  selector:
+    matchLabels:
+      app: geniki-tracker
+  template:
+    metadata:
+      labels:
+        app: geniki-tracker
+    spec:
+      containers:
+      - name: geniki-tracker-container
+        image: {{ .Values.geniki.image.repository }}:{{ .Values.geniki.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.global.tracker_port }}
+        resources:
+          requests:
+            cpu: "60m"
+            memory: "50M"
+          limits:
+            cpu: "120m"
+            memory: "100M"
+        env:
+        - name: PORT
+          value: "{{ .Values.global.tracker_port }}"
+        - name: LOG_PATH
+          value: {{ .Values.geniki.logpath }}
+        - name: LOG_NAME
+          value: {{ .Values.geniki.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.geniki.loglevel }}
+        - name: "PM_PORT"
+          value: "{{ .Values.global.pm_port }}"
+        - name: "USE_PROXY"
+          value: "{{ .Values.geniki.use_proxy }}"
+
+{{- end }}

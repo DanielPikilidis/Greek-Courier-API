@@ -1,0 +1,17 @@
+speedex:
+  enabled: true
+  use_proxy: false
+  name: speedex-tracker
+  image:
+    repository: dpikilidis/speedex-tracker
+    tag: latest
+  logname: speedex-tracker.log
+  loglevel: INFO
+
+autoscaling:
+  horizontal:
+    min_replicas: 2
+    max_replicas: 20
+  vertical:
+    enabled: false
+    mode: "Off"  # Possible values: "Auto", "Off", "Initial", "Recreate""  
