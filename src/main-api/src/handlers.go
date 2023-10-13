@@ -10,6 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Track one package
+// @Description Track one package
+// @Tags Tracking
+// @Accept  json
+// @Produce  json
+// @Param courier path string true "Courier name"
+// @Param id path string true "Package id"
+// @Success 200 {object} Data
+// @Failure 404 {object} TrackingError
+// @Failure 500 Internal Server Error
+// @Router /track-one/{courier}/{id} [get]
 func trackOneHandler(c *gin.Context) {
 	courier := c.Param("courier")
 	id := c.Param("id")
@@ -68,6 +79,17 @@ func trackOneHandler(c *gin.Context) {
 	c.JSON(200, data)
 }
 
+// @Summary Track many packages
+// @Description Track many packages
+// @Tags Tracking
+// @Accept  json
+// @Produce  json
+// @Param courier path string true "Courier name"
+// @Param ids path string true "Package ids"
+// @Success 200 {object} Data
+// @Failure 404 {object} TrackingError
+// @Failure 500 Internal Server Error
+// @Router /track-many/{courier}/{ids} [get]
 func trackManyHandler(c *gin.Context) {
 	courier := c.Param("courier")
 	ids := c.Param("ids")

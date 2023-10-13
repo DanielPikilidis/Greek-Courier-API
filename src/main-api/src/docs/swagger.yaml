@@ -1,0 +1,115 @@
+definitions:
+  main.Data:
+    properties:
+      data:
+        additionalProperties:
+          $ref: '#/definitions/main.Package'
+        type: object
+      error:
+        $ref: '#/definitions/main.TrackingError'
+      success:
+        type: boolean
+    type: object
+  main.Location:
+    properties:
+      datetime:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+    type: object
+  main.Package:
+    properties:
+      courier_icon:
+        type: string
+      courier_name:
+        type: string
+      delivered:
+        type: boolean
+      found:
+        type: boolean
+      locations:
+        items:
+          $ref: '#/definitions/main.Location'
+        type: array
+    type: object
+  main.TrackingError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /track-many/{courier}/{ids}:
+    get:
+      consumes:
+      - application/json
+      description: Track many packages
+      parameters:
+      - description: Courier name
+        in: path
+        name: courier
+        required: true
+        type: string
+      - description: Package ids
+        in: path
+        name: ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Data'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.TrackingError'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: Internal
+      summary: Track many packages
+      tags:
+      - Tracking
+  /track-one/{courier}/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Track one package
+      parameters:
+      - description: Courier name
+        in: path
+        name: courier
+        required: true
+        type: string
+      - description: Package id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Data'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.TrackingError'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: Internal
+      summary: Track one package
+      tags:
+      - Tracking
+swagger: "2.0"

@@ -6,5 +6,5 @@ else
     tag="latest"
 fi
 
-docker build --rm -t $1/main-api --tag $1/main-api:$tag .
+docker build --rm -t $1/main-api:$tag .
 docker push $1/main-api:$tag
