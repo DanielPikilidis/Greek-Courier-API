@@ -3,8 +3,12 @@ package main
 import (
 	"os"
 
+	docs "main-api/docs"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var redisClient *redisHandler
@@ -24,6 +28,8 @@ func main() {
 	defer redisClient.Close()
 
 	router := gin.Default()
+	docs.SwaggerInfo.BasePath = "/"
+
 	addRoutes(router)
 
 	port := getEnvCustom("PORT", "8000")
@@ -34,6 +40,10 @@ func main() {
 func addRoutes(router *gin.Engine) {
 	router.GET("/track-one/:courier/:id", trackOneHandler)
 	router.GET("/track-many/:courier/:ids", trackManyHandler)
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(302, "/docs/index.html")
+	})
 }
 
 func getEnvCustom(key string, defaultValue string) string {

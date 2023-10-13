@@ -34,10 +34,13 @@ it will use that for all of its requests to the courier.
 From some testing this can handle over 100 requests / second (mixed traffic for all couriers with no cached IDs). Currently the rate limit is set to 1 request / second.
 
 ## Usage
-To track one package use this:
+Access the swagger UI:<br>
+`https://courier-api.danielpikilidis.com/`
+
+Track one package:<br>
 `https://courier-api.danielpikilidis.com/track-one/[courier]/[id]`
 
-And to track many package at the same time use this:
+Track many packages at the same time (up to 20 except for elta where its 5):<br>
 `https://courier-api.danielpikilidis.com/track-many/[courier]/[id1]&[id2]&[id3]&...`
 
 The courier options are acs, couriercenter, easymail, elta, skroutz, speedex, and geniki.
@@ -143,7 +146,6 @@ work with a cloud provider. Will probably need an ingress controller instead of 
 - Setup fluentbit
 - Setup prometheus and collect stats.
 - Change the domain name. Not really a fan of using a personal domain name for this.
-- Add swagger UI.
 
 
 ## Contributing
