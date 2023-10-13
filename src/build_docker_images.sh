@@ -1,7 +1,7 @@
 #!/bin/bash
 
 repo="dpikilidis"
-tag="0.0.1"
+tag="latest"
 
 start_dir=$(pwd)
 

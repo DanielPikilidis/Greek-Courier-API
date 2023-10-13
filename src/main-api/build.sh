@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $2 -gt 0 ]; then
+if [ "$2" ]; then
     tag="$2"
 else
     tag="latest"
