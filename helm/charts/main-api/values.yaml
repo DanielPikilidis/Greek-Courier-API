@@ -4,8 +4,6 @@ api:
     repository: dpikilidis/main-api
     tag: latest
   replicas: 2
-  logpath: /tmp
-  logname: main-api.log
   loglevel: INFO
 
 autoscaling:

@@ -5,7 +5,6 @@ easymail:
   image:
     repository: dpikilidis/easymail-tracker
     tag: latest
-  logname: easymail-tracker.log
   loglevel: INFO
 
 autoscaling:

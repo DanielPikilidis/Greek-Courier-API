@@ -26,9 +26,6 @@ spec:
             value: "release"
           - name: PORT
             value: "{{ .Values.global.pm_port }}"
-          - name: LOG_PATH
-            value: {{ .Values.pm.logpath }}
-          - name: LOG_NAME
             value: {{ .Values.pm.logname }}
           - name: LOG_LEVEL
             value: {{ .Values.pm.loglevel }}

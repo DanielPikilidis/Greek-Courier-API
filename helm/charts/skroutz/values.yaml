@@ -5,8 +5,6 @@ skroutz:
   image:
     repository: dpikilidis/skroutz-tracker
     tag: latest
-  logpath: /tmp
-  logname: skroutz-tracker.log
   loglevel: INFO
 
 autoscaling:
