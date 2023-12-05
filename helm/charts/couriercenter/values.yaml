@@ -11,8 +11,8 @@ couriercenter:
 
 autoscaling:
   horizontal:
-    min_replicas: 2
-    max_replicas: 20
+    min_replicas: 1
+    max_replicas: 10
   vertical:
     enabled: false
     mode: "Off"  # Possible values: "Auto", "Off", "Initial", "Recreate""  
