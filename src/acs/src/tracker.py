@@ -208,13 +208,22 @@ class Tracker:
         package.found = True
 
         for status in response["statusHistory"]:
-            package.locations.append(
-                Location(
-                    datetime = parser.isoparse(status["controlPointDate"]).astimezone(tz=tz.gettz("Europe/Athens")),
-                    location = status["controlPoint"],
-                    description = status["description"],
+            try:
+                package.locations.append(
+                    Location(
+                        datetime = parser.isoparse(status["controlPointDate"]).astimezone(tz=tz.gettz("Europe/Athens")),
+                        location = status["controlPoint"],
+                        description = status["description"],
+                    )
                 )
-            )
+            except KeyError:
+                package.locations.append(
+                    Location(
+                        datetime = datetime.datetime.now(),
+                        location = status["controlPoint"],
+                        description = status["description"],
+                    )
+                )
 
         package.delivered = response["isDelivered"]
 
@@ -269,13 +278,22 @@ class Tracker:
 
             locations = []
             for status in package["statusHistory"]:
-                locations.append(
-                    Location(
-                        datetime = parser.isoparse(status["controlPointDate"]).astimezone(tz=tz.gettz("Europe/Athens")),
-                        location = status["controlPoint"],
-                        description = status["description"],
+                try:
+                    package.locations.append(
+                        Location(
+                            datetime = parser.isoparse(status["controlPointDate"]).astimezone(tz=tz.gettz("Europe/Athens")),
+                            location = status["controlPoint"],
+                            description = status["description"],
+                        )
                     )
-                )
+                except KeyError:
+                    package.locations.append(
+                        Location(
+                            datetime = datetime.datetime.now(),
+                            location = status["controlPoint"],
+                            description = status["description"],
+                        )
+                    )
 
             p = Package()
             p.found = True
