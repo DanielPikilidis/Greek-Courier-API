@@ -5,8 +5,6 @@ acs:
   image:
     repository: dpikilidis/acs-tracker
     tag: latest
-  logpath: /tmp
-  logname: acs-tracker.log
   loglevel: INFO
 
 autoscaling:

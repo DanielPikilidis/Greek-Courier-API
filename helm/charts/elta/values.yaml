@@ -5,8 +5,6 @@ elta:
   image:
     repository: dpikilidis/elta-tracker
     tag: latest
-  logpath: /tmp
-  logname: elta-tracker.log
   loglevel: INFO
 
 autoscaling:

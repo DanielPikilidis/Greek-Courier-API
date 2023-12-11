@@ -5,8 +5,6 @@ couriercenter:
   image:
     repository: dpikilidis/couriercenter-tracker
     tag: latest
-  logpath: /tmp
-  logname: couriercenter-tracker.log
   loglevel: INFO
 
 autoscaling:

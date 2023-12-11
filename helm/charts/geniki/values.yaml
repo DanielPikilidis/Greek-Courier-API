@@ -4,7 +4,6 @@ geniki:
   image:
     repository: dpikilidis/geniki-tracker
     tag: latest
-  logname: geniki-tracker.log
   loglevel: INFO
 
 autoscaling:

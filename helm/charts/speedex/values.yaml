@@ -5,7 +5,6 @@ speedex:
   image:
     repository: dpikilidis/speedex-tracker
     tag: latest
-  logname: speedex-tracker.log
   loglevel: INFO
 
 autoscaling:
