@@ -32,7 +32,7 @@ class Tracker:
         self.tracking_url = "http://www.speedex.gr/speedex/NewTrackAndTrace.aspx?number="
         self.executor = ThreadPoolExecutor(max_workers=20)
         self.loop = asyncio.get_event_loop()
-        dictConfig(LogConfig().dict())
+        dictConfig(LogConfig().model_dump())
         self.logger = logging.getLogger(getenv("LOG_NAME", "speedex-tracker"))
 
     async def startup(self):

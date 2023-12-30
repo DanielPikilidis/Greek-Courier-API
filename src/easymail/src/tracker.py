@@ -31,7 +31,7 @@ class Tracker:
         self.tracking_url = "https://trackntrace.easymail.gr/"
         self.executor = ThreadPoolExecutor(max_workers=20)
         self.loop = asyncio.get_event_loop()
-        dictConfig(LogConfig().dict())
+        dictConfig(LogConfig().model_dump())
         self.logger = logging.getLogger(getenv("LOG_NAME", "easymail-tracker"))
 
     async def startup(self):

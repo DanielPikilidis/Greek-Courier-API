@@ -33,7 +33,7 @@ class Tracker:
         self.executor = ThreadPoolExecutor(max_workers=20)
         self.loop = asyncio.get_event_loop()
         self.proxy_queue = queue.Queue()
-        dictConfig(LogConfig().dict())
+        dictConfig(LogConfig().model_dump())
         self.logger = logging.getLogger(getenv("LOG_NAME", "geniki-tracker"))
 
     async def startup(self):
@@ -41,6 +41,8 @@ class Tracker:
         if use_proxy:
             for _ in range(5):
                 self.proxy_queue.put(self.__request_proxy())
+        else:
+            self.proxy_queue = None
 
     async def shutdown(self):
         self.__release_proxy()
@@ -70,6 +72,9 @@ class Tracker:
         }
 
     def __release_proxy(self):
+        if self.proxy_queue == None:
+            return
+        
         while not self.proxy_queue.empty():
             proxy = self.proxy_queue.get()
             host = proxy["http"].split("@")[-1]
@@ -81,7 +86,7 @@ class Tracker:
 
         try:
             proxy = self.proxy_queue.get(block=False)
-        except queue.Empty:
+        except:
             # If for any reason there are no proxies available (which I really doubt will ever happen), don't use one
             proxy = None
         finally:
@@ -140,7 +145,7 @@ class Tracker:
 
         try:
             proxy = self.proxy_queue.get(block=False)
-        except queue.Empty:
+        except:
             # If for any reason there are no proxies available (which I really doubt will ever happen), don't use one
             proxy = None
 
@@ -162,7 +167,7 @@ class Tracker:
             
             if package.find("div", {"class": "empty-text"}):
                 # Package not found
-                packages[id] = Package()
+                packages[tracking_id] = Package()
                 continue
         
             p = Package()

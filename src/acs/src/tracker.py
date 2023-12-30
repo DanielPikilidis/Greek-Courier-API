@@ -1,7 +1,7 @@
 import asyncio, datetime, logging
 from dataclasses import dataclass, field
 from playwright.async_api import async_playwright
-from playwright._impl._api_types import TimeoutError as playwrightTimeoutError
+from playwright.async_api import TimeoutError as playwrightTimeoutError
 from typing import List
 from dateutil import parser, tz
 from log_config import LogConfig
@@ -29,7 +29,7 @@ class Tracker:
     def __init__(self, max_pages=5):
         self.tracking_url = "https://www.acscourier.net/"
         self.max_pages = max_pages
-        dictConfig(LogConfig().dict())
+        dictConfig(LogConfig().model_dump())
         self.logger = logging.getLogger(getenv("LOG_NAME", "acs-tracker"))
 
     async def startup(self):
@@ -41,6 +41,9 @@ class Tracker:
         await self.__init_browser()
     
     async def shutdown(self):
+        for task in self.active_tasks:
+            task.cancel()
+
         await self.__close_browser()
         if self.proxy:
             self.__release_proxy()
@@ -55,19 +58,40 @@ class Tracker:
                 "--disable-gpu",
                 "--no-sandbox",
                 "--disable-extensions",
+                "--disable-gl-extensions",
+                "--disable-plugins",
+                "--disable-infobars",
+                "--enable-fast-unload",
+                "--disable-lazy-loading",
+                "--disable-sync",
                 "--disable-dev-shm-usage",
                 "--disable-setuid-sandbox",
                 "--single-process",
                 "--no-zygote",
                 "--no-first-run",
+                "--no-default-browser-check",
+                "--disable-hang-monitor",
+                "--disable-popup-blocking",
+                "--disable-prompt-on-repost",
+                "--disable-client-side-phishing-detection",
+                "--mute-audio",
+                "--aggressive-cache-discard",
+                "--disable-cache",
+                "--disable-application-cache",
+                "--disable-offline-load-stale-cache",
+                "--disk-cache-size=0",
+                "--media-cache-size=0",
                 "--hide-scrollbars",
                 "--disable-notifications",
+                "--disable-session-crashed-bubble",
+                "--disable-background-timers",
                 "--disable-background-timer-throttling",
                 "--disable-backgrounding-occluded-windows",
                 "--disable-breakpad",
                 "--disable-component-extensions-with-background-pages",
                 "--disable-ipc-flooding-protection",
                 "--disable-renderer-backgrounding",
+                "--check-for-update-interval=999999999999",
             ]
         )
 
@@ -81,8 +105,10 @@ class Tracker:
             await self.__clear_popups(page)
             await self.page_queue.put(page)
 
-        asyncio.create_task(self.__check_pages())
-        asyncio.create_task(self.__restart_pages())
+        self.active_tasks = [
+            asyncio.create_task(self.__check_pages()),
+            asyncio.create_task(self.__restart_pages())
+        ]
 
         self.logger.info("Browser initialized successfully")
 
@@ -285,7 +311,7 @@ class Tracker:
                     continue
                                 
                 try:
-                    package.locations.append(
+                    locations.append(
                         Location(
                             datetime = parser.isoparse(status["controlPointDate"]).astimezone(tz=tz.gettz("Europe/Athens")),
                             location = status["controlPoint"],
@@ -293,7 +319,7 @@ class Tracker:
                         )
                     )
                 except KeyError:
-                    package.locations.append(
+                    locations.append(
                         Location(
                             datetime = datetime.datetime.now(),
                             location = status["controlPoint"],
