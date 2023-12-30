@@ -36,6 +36,8 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: '0 * * * *' # every 1 hour
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       backoffLimit: 2
