@@ -208,6 +208,9 @@ class Tracker:
         package.found = True
 
         for status in response["statusHistory"]:
+            if "controlPointDate" not in status:
+                continue
+            
             try:
                 package.locations.append(
                     Location(
@@ -278,6 +281,9 @@ class Tracker:
 
             locations = []
             for status in package["statusHistory"]:
+                if "controlPointDate" not in status:
+                    continue
+                                
                 try:
                     package.locations.append(
                         Location(
