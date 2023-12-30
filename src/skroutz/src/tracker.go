@@ -7,6 +7,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 var trackingUrl string = "https://api.sendx.gr/user/hp/%s"
@@ -46,7 +48,7 @@ type SkroutzLocation struct {
 	Description string `json:"description"`
 }
 
-func trackOne(id string) (map[string]*Package, *TrackingError) {
+func trackOne(id string, logger *logrus.Logger) (map[string]*Package, *TrackingError) {
 	p := NewPackage()
 
 	url := fmt.Sprintf(trackingUrl, id)
@@ -92,7 +94,7 @@ func trackOne(id string) (map[string]*Package, *TrackingError) {
 	return map[string]*Package{id: p}, nil
 }
 
-func trackMany(ids string) (map[string]*Package, *TrackingError) {
+func trackMany(ids string, logger *logrus.Logger) (map[string]*Package, *TrackingError) {
 	idsSlice := strings.Split(ids, "&") // Should probably also check for duplicates...
 
 	packages := make(map[string]*Package)
@@ -102,7 +104,7 @@ func trackMany(ids string) (map[string]*Package, *TrackingError) {
 	for _, id := range idsSlice {
 		wg.Add(1)
 		go func(id string) {
-			trackingInfo, err := trackOne(id)
+			trackingInfo, err := trackOne(id, logger)
 			if err != nil {
 				packages[id] = NewPackage()
 			} else {
@@ -112,5 +114,6 @@ func trackMany(ids string) (map[string]*Package, *TrackingError) {
 		}(id)
 	}
 	wg.Wait()
+
 	return packages, nil
 }

@@ -1,5 +1,5 @@
 acs:
-  enabled: true
+  enabled: false
   use_proxy: false
   name: acs-tracker
   image:

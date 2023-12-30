@@ -1,5 +1,5 @@
 couriercenter:
-  enabled: true
+  enabled: false
   use_proxy: false
   name: couriercenter-tracker
   image:

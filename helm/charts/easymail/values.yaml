@@ -1,5 +1,5 @@
 easymail:
-  enabled: true
+  enabled: false
   use_proxy: false
   name: easymail-tracker
   image:
