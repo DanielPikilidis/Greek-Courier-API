@@ -6,7 +6,6 @@ from tracker import Tracker, Package
 from dataclasses import dataclass
 from typing import List, Dict
 
-app = FastAPI()
 tracker = Tracker()
 
 @dataclass
@@ -20,13 +19,12 @@ class Response:
     data: List[Dict[str, Package]]
     error: ResponseError
 
-@app.on_event("startup")
-async def startup_event():
+async def lifespan(app: FastAPI):
     await tracker.startup()
-
-@app.on_event("shutdown")
-async def shutdown_event():
+    yield
     await tracker.shutdown()
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/track-one/{id}")
 async def track_one(id: str):

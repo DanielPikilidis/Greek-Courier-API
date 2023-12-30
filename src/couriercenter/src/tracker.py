@@ -30,7 +30,7 @@ class Tracker:
         self.tracking_url = "https://courier.gr/track/result?tracknr="
         self.executor = ThreadPoolExecutor(max_workers=20)
         self.loop = asyncio.get_event_loop()
-        dictConfig(LogConfig().dict())
+        dictConfig(LogConfig().model_dump())
         self.logger = logging.getLogger(getenv("LOG_NAME", "couriercenter-tracker"))
 
     async def startup(self):
