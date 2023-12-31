@@ -4,7 +4,9 @@ RUN mkdir /skroutz-tracker
 
 WORKDIR /skroutz-tracker
 
-RUN apt update -y && apt upgrade -y
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt autoremove -y
 
 COPY /src/* /skroutz-tracker/
 

@@ -1,5 +1,5 @@
 speedex:
-  enabled: true
+  enabled: false
   use_proxy: false
   name: speedex-tracker
   image:

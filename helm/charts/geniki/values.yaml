@@ -1,5 +1,5 @@
 geniki:
-  enabled: true
+  enabled: false
   use_proxy: false
   image:
     repository: dpikilidis/geniki-tracker

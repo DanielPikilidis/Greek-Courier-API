@@ -1,5 +1,5 @@
 skroutz:
-  enabled: true
+  enabled: false
   use_proxy: false
   name: skroutz-tracker
   image:

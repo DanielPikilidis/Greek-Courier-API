@@ -24,11 +24,11 @@ func main() {
 
 	useProxy := getEnvCustom("USE_PROXY", "false")
 	if useProxy == "true" {
-		err := requestProxy()
+		err := requestProxy(logger)
 		if err != nil {
 			logger.Error("Failed to get proxy: ", err)
 		}
-		defer releaseProxy()
+		defer releaseProxy(logger)
 	}
 
 	port := getEnvCustom("PORT", "8000")
@@ -58,7 +58,7 @@ func track_one_handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	trackingInfo, err := trackOne(id)
+	trackingInfo, err := trackOne(id, logger)
 	if err != nil {
 		response := Response{
 			Success: false,
@@ -88,7 +88,7 @@ func track_many_handler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	ids := vars["ids"]
 
-	packages, _ := trackMany(ids)
+	packages, _ := trackMany(ids, logger)
 
 	response := Response{
 		Success: true,
@@ -105,7 +105,7 @@ func track_many_handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-func requestProxy() error {
+func requestProxy(logger *logrus.Logger) error {
 	type Proxy struct {
 		Type     string `json:"type"`
 		Host     string `json:"host"`
@@ -136,7 +136,7 @@ func requestProxy() error {
 	return nil
 }
 
-func releaseProxy() {
+func releaseProxy(logger *logrus.Logger) {
 	body := []byte(`{
 		"host": ` + proxyHost + `
 	}`)
