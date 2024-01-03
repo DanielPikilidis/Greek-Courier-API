@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# unittest discover is complete garbage, like I can't even specify a directory... so I have to do this
+pip3 install -r reqs/requirements.txt
+playwright install --with-deps chromium
 
+# unittest discover is complete garbage, like I can't even specify a directory... so I have to do this
 for file in $(find . -name "*_test.py"); do
     echo "Running test: $file"
     python3 $file
