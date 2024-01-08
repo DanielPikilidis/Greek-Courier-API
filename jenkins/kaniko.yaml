@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - sleep
+    args:
+    - 99d
+    volumeMounts:
+    - name: docker-config
+      mountPath: /kaniko/.docker
+    - name: shared-volume
+      mountPath: /workspace
+  volumes:
+  - name: docker-config
+    emptyDir: {}
+  - name: shared-volume
+    persistentVolumeClaim:
+      claimName: shared-pvc
