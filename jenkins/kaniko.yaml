@@ -17,5 +17,4 @@ spec:
   - name: docker-config
     emptyDir: {}
   - name: shared-volume
-    persistentVolumeClaim:
-      claimName: shared-pvc
+    emptyDir: {}

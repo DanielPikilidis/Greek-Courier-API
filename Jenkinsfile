@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
     environment {
         DOCKERHUB_CREDS = credentials('dockerhub-creds')
     }
@@ -7,13 +7,38 @@ pipeline {
         stage('Checkout') {
             agent {
                 kubernetes {
-                    yamlFile 'jenkins/git.yaml'
-                    defaultContainer 'git'
+                    yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: git
+    image: alpine/git
+    command:
+    - sleep
+    args:
+    - infinity
+    volumeMounts:
+    - name: shared-volume
+      mountPath: /workspace
+  volumes:
+  - name: shared-volume
+    emptyDir: {}
+                    '''
                 }
             }
             steps {
-                dir('/workspace') {
+                dir('workspace') {
                     git branch:'add-jenkins', url:'https://github.com/DanielPikilidis/Greek-Courier-API.git'
+                }
+
+                script {
+                    def pythonTemplateYaml = readFile('workspace/jenkins/python.yaml')
+                    env.PYTHON_TEMPLATE = pythonTemplateYaml
+                    def golangTemplateYaml = readFile('workspace/jenkins/golang.yaml')
+                    env.GOLANG_TEMPLATE = golangTemplateYaml
+                    def kanikoTemplateYaml = readFile('workspace/jenkins/kaniko.yaml')
+                    env.KANIKO_TEMPLATE = kanikoTemplateYaml
                 }
             }
         }
@@ -22,12 +47,11 @@ pipeline {
                 stage('Test ACS') {
                     agent {
                         kubernetes {
-                            yamlFile 'jenkins/python.yaml'
-                            defaultContainer 'python'
+                            yaml env.PYTHON_TEMPLATE
                         }
                     }
                     steps {
-                        sh 'ls -al; cd /workspace/src/acs; ./test.sh;'
+                        sh 'ls -al; cd workspace/src/acs; ./test.sh;'
                     }
                 }
             }
@@ -35,8 +59,7 @@ pipeline {
         stage('Prepare Kaniko') {
             agent {
                 kubernetes {
-                    yamlFile 'jenkins/kaniko.yaml'
-                    defaultContainer 'kaniko'
+                    yaml env.KANIKO_TEMPLATE
                 }
             }
             steps {
@@ -51,16 +74,15 @@ pipeline {
                 stage ("Build ACS") {
                     agent {
                         kubernetes {
-                            yamlFile 'jenkins/kaniko.yaml'
-                            defaultContainer 'kaniko'
+                            yaml env.KANIKO_TEMPLATE
                         }
                     }
                     steps {
                         sh '''
                             ls -al;
                             /kaniko/executor \
-                                --context /workspace/src/acs \
-                                --dockerfile /workspace/src/acs/Dockerfile \
+                                --context workspace/src/acs \
+                                --dockerfile workspace/src/acs/Dockerfile \
                                 --destination docker.io/dpikilidis/acs-tracker:test
                         '''
                     }

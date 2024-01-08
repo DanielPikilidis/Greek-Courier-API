@@ -13,5 +13,4 @@ spec:
       mountPath: /workspace
   volumes:
   - name: shared-volume
-    persistentVolumeClaim:
-      claimName: shared-pvc
+    emptyDir: {}
