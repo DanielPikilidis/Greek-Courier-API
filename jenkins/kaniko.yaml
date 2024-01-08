@@ -11,10 +11,6 @@ spec:
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker
-    - name: shared-volume
-      mountPath: /workspace
   volumes:
   - name: docker-config
-    emptyDir: {}
-  - name: shared-volume
     emptyDir: {}
