@@ -11,6 +11,3 @@ spec:
     volumeMounts:
     - name: shared-volume
       mountPath: /workspace
-  volumes:
-  - name: shared-volume
-    emptyDir: {}
