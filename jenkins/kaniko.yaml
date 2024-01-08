@@ -16,3 +16,5 @@ spec:
   volumes:
   - name: docker-config
     emptyDir: {}
+  - name: shared-volume
+    emptyDir: {}

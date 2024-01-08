@@ -80,6 +80,7 @@ spec:
                     steps {
                         sh '''
                             ls -al;
+                            pwd;
                             /kaniko/executor \
                                 --context workspace/src/acs \
                                 --dockerfile workspace/src/acs/Dockerfile \
