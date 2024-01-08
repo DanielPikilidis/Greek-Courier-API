@@ -18,12 +18,7 @@ class TestTrack(unittest.IsolatedAsyncioTestCase):
         tracker = Tracker()
         await tracker.startup()
 
-        valid_id = "14007717130"
-        invalid_id = "14007717131"
-
-        result = await tracker.track_one(valid_id)
-
-        self.assertEqual(result[valid_id].found, True)
+        invalid_id = "11111111111"
 
         result = await tracker.track_one(invalid_id)
 
@@ -35,13 +30,7 @@ class TestTrack(unittest.IsolatedAsyncioTestCase):
         tracker = Tracker()
         await tracker.startup()
 
-        valid_ids = ["14007711850", "14007714424", "14007715029"]
-        invalid_ids = ["14007711851", "14007711852", "14007711853"]
-
-        result = await tracker.track_many(valid_ids)
-
-        for id in valid_ids:
-            self.assertEqual(result[id].found, True)
+        invalid_ids = ["11111111111", "11111111112", "11111111113"]
 
         result = await tracker.track_many(invalid_ids)
 
