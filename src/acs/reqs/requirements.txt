@@ -1,5 +1,5 @@
 beautifulsoup4==4.12.2
-fastapi==0.108.0
+fastapi==0.109.1
 playwright==1.40.0
 pydantic==2.5.3
 python_dateutil==2.8.2
