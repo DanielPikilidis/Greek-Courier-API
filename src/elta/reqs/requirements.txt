@@ -1,4 +1,4 @@
-fastapi==0.108.0
+fastapi==0.109.1
 pydantic==2.5.3
 python_dateutil==2.8.2
 Requests==2.31.0
