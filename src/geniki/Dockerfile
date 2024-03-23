@@ -1,16 +1,23 @@
-FROM python:3.12.1-slim-bullseye
+FROM python:3.12.2-alpine3.19 as builder
 
-RUN mkdir /geniki-tracker
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache python3-dev build-base && \
+    pip3 install --upgrade pip
 
-COPY /reqs/* /geniki-tracker/
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY /reqs/* .
+RUN pip3 install -r requirements.txt
+
+
+FROM python:3.12.2-alpine3.19
+
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /geniki-tracker
-
-RUN apt update -y && \
-    apt upgrade -y && \
-    apt autoremove -y && \
-    pip3 install -r requirements.txt
-
 COPY /src/* /geniki-tracker/
 
 CMD [ "python3", "app.py" ]

@@ -6,5 +6,5 @@ else
     tag="latest"
 fi
 
-docker build --rm -t $1/couriercenter-tracker --tag $1/couriercenter-tracker:$tag .
+docker build --rm --tag $1/couriercenter-tracker:$tag .
 docker push $1/couriercenter-tracker:$tag
