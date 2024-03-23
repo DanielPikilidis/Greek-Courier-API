@@ -1,7 +1,6 @@
-beautifulsoup4==4.12.2
-fastapi==0.109.1
-playwright==1.40.0
-pydantic==2.5.3
+fastapi==0.110.0
+playwright==1.41.1
+pydantic==2.6.4
 python_dateutil==2.8.2
 Requests==2.31.0
-uvicorn==0.25.0
+uvicorn==0.29.0

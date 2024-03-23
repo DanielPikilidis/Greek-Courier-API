@@ -6,5 +6,5 @@ else
     tag="latest"
 fi
 
-docker build --rm -t $1/proxy-manager --tag $1/proxy-manager:$tag .
+docker build --rm --tag $1/proxy-manager:$tag .
 docker push $1/proxy-manager:$tag

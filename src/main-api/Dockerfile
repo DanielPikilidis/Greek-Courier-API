@@ -1,16 +1,18 @@
-FROM golang:latest
-
-RUN mkdir /main-api
+FROM golang:alpine as builder
 
 WORKDIR /main-api
 
-RUN apt update -y && apt upgrade -y
+COPY ./src /main-api
 
-COPY /src/*.go /main-api/
-COPY /src/go.mod /main-api/
-COPY /src/go.sum /main-api/
-COPY /src/docs/ /main-api/docs/
+RUN apk update && \
+    apk upgrade && \
+    go build -tags=jsoniter -o main-api .
 
-RUN go build -tags=jsoniter .
+
+FROM alpine
+
+WORKDIR /main-api
+
+COPY --from=builder /main-api/main-api /main-api
 
 CMD [ "./main-api" ]
