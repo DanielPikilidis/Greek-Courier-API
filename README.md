@@ -125,14 +125,14 @@ All configuration is made in the values.yaml files.
 
 
 ## How is this hosted
-Right now this is hosted on a high availability microk8s cluster with 3 nodes. Total 16 cores and 48GB RAM. I'm not renting
-this, but using my own server that has a lot of unused resources. Obviously the resource usage is much lower than
-what I have allocated, this cluster is also used for other purposes. Currently it's using about 800mb of RAM
-with the default 2 pods per tracker. An external caddy reverse proxy is used to load balance the requests
-between these 3 nodes. For security purposes I also have a VPS (from pointer) that filters the traffic
+Right now this is hosted on a high availability Talos cluster. The workers have a total 12 cores and 24GB RAM. I'm not renting
+this, but instead using my own server that has a lot of unused resources. Obviously the resource usage is much lower than
+what I have allocated, this cluster is also used for other purposes. Currently it's using about 700mb of RAM. There is a traefik
+reverse proxy that is used to load balance the requests between these 3 nodes. 
+For security purposes I also have a VPS (from Hetzner) that filters the traffic
 before forwarding to the actual server. So if for any reason the VPS stops working, the API will not
 be accessible. Because this is hosted on my own home server, in case of an internet outage nothing will work.
-And in case of a power outage it can continue running for about 20 minutes before shutting down.
+And in case of a power outage it can continue running for about 15 minutes before shutting down.
 
 TLDR: It's self-hosted and will not have 100% up-time, so don't start opening issues when it's not working.
 
