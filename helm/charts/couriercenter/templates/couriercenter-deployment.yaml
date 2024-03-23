@@ -18,6 +18,13 @@ spec:
       - name: couriercenter-tracker-container
         image: {{ .Values.couriercenter.image.repository }}:{{ .Values.couriercenter.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         resources:

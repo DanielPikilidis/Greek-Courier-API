@@ -18,6 +18,13 @@ spec:
       - name: easymail-tracker-container
         image: {{ .Values.easymail.image.repository }}:{{ .Values.easymail.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         resources:

@@ -18,6 +18,13 @@ spec:
       - name: main-api-container
         image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.api_port }}
         resources:
@@ -32,6 +39,8 @@ spec:
           value: "release"
         - name: PORT
           value: "{{ .Values.global.api_port }}"
+        - name: TRACKER_PORT
+          value: "{{ .Values.global.tracker_port }}"
         - name: LOG_LEVEL
           value: {{ .Values.api.loglevel }}
         - name: REDIS_ENABLED

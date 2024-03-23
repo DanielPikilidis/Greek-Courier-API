@@ -19,6 +19,13 @@ spec:
       - name: elta-tracker-container
         image: {{ .Values.elta.image.repository }}:{{ .Values.elta.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         resources:

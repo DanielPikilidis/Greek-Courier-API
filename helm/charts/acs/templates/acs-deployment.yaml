@@ -18,6 +18,13 @@ spec:
       - name: acs-tracker-container
         image: {{ .Values.acs.image.repository }}:{{ .Values.acs.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         readinessProbe:

@@ -18,6 +18,13 @@ spec:
       - name: geniki-tracker-container
         image: {{ .Values.geniki.image.repository }}:{{ .Values.geniki.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         resources:

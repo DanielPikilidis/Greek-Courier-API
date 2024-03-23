@@ -49,6 +49,13 @@ spec:
           containers:
             - name: kubectl
               image: bitnami/kubectl
+              securityContext:
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
               command:
               - bash
               - -c

@@ -16,26 +16,33 @@ spec:
         app: proxy-manager
     spec:
       containers:
-        - name: proxy-manager-container
-          image: {{ .Values.pm.image.repository }}:{{ .Values.pm.image.tag }}
-          imagePullPolicy: Always
-          ports:
-            - containerPort: {{ .Values.global.pm_port }}
-          env: 
-          - name: GIN_MODE
-            value: "release"
-          - name: PORT
-            value: "{{ .Values.global.pm_port }}"
-            value: {{ .Values.pm.logname }}
-          - name: LOG_LEVEL
-            value: {{ .Values.pm.loglevel }}
-          - name: PROXY_LIST_PATH
-            value: {{ .Values.pm.filepath }}/{{ .Values.pm.filename }}
-          
-          volumeMounts:
-            - name: proxy-secret
-              mountPath: {{ .Values.pm.filepath }}/{{ .Values.pm.filename }}
-              subPath: {{ .Values.pm.filename }}
+      - name: proxy-manager-container
+        image: {{ .Values.pm.image.repository }}:{{ .Values.pm.image.tag }}
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        ports:
+          - containerPort: {{ .Values.global.pm_port }}
+        env: 
+        - name: GIN_MODE
+          value: "release"
+        - name: PORT
+          value: "{{ .Values.global.pm_port }}"
+          value: {{ .Values.pm.logname }}
+        - name: LOG_LEVEL
+          value: {{ .Values.pm.loglevel }}
+        - name: PROXY_LIST_PATH
+          value: {{ .Values.pm.filepath }}/{{ .Values.pm.filename }}
+        
+        volumeMounts:
+          - name: proxy-secret
+            mountPath: {{ .Values.pm.filepath }}/{{ .Values.pm.filename }}
+            subPath: {{ .Values.pm.filename }}
           
       volumes:
         - name: proxy-secret
