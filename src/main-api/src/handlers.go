@@ -3,12 +3,15 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
 
 	"github.com/gin-gonic/gin"
 )
+
+var tracker_port = os.Getenv("TRACKER_PORT")
 
 // @Summary Track one package
 // @Description Track one package
@@ -47,7 +50,7 @@ func trackOneHandler(c *gin.Context) {
 		logger.Error("Error while getting ", key, " from cache: ", err)
 	}
 
-	requestUrl := fmt.Sprintf("http://%s-tracker-service/track-one/%s", courier, id)
+	requestUrl := fmt.Sprintf("http://%s-tracker-service:%s/track-one/%s", courier, tracker_port, id)
 	response, err := http.Get(requestUrl)
 
 	if err != nil {
@@ -112,7 +115,7 @@ func trackManyHandler(c *gin.Context) {
 	if len(idsToSearch) > 0 {
 		ids = strings.Join(idsToSearch, "&")
 
-		requestUrl := fmt.Sprintf("http://%s-tracker-service/track-many/%s", courier, ids)
+		requestUrl := fmt.Sprintf("http://%s-tracker-service:%s/track-many/%s", courier, tracker_port, ids)
 		response, err := http.Get(requestUrl)
 
 		if err != nil {

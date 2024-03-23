@@ -18,6 +18,13 @@ spec:
       - name: speedex-tracker-container
         image: {{ .Values.speedex.image.repository }}:{{ .Values.speedex.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         resources:

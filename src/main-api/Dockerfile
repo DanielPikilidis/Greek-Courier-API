@@ -11,6 +11,9 @@ RUN apk update && \
 
 FROM alpine
 
+RUN adduser --disabled-password --gecos '' --uid 1001 appuser
+USER 1001
+
 WORKDIR /main-api
 
 COPY --from=builder /main-api/main-api /main-api

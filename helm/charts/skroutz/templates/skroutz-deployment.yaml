@@ -18,6 +18,13 @@ spec:
       - name: skroutz-tracker-container
         image: {{ .Values.skroutz.image.repository }}:{{ .Values.skroutz.image.tag }}
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
         ports:
           - containerPort: {{ .Values.global.tracker_port }}
         resources:

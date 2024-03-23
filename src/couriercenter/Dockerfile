@@ -14,6 +14,9 @@ RUN pip3 install -r requirements.txt
 
 FROM python:3.12.2-alpine3.19
 
+RUN adduser --disabled-password --gecos '' --uid 1001 appuser
+USER 1001
+
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
