@@ -7,4 +7,4 @@ else
 fi
 
 docker build --rm --tag $1/speedex-tracker:$tag .
-docker push $1/speedex-tracker:$tag
+docker push $1/speedex-tracker:$tag 
