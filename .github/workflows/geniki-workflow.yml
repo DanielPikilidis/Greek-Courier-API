@@ -23,6 +23,10 @@ jobs:
       run: |
         cd src/geniki
         sh test.sh
+    - name: Cleanup
+      run: |
+        cd $GITHUB_WORKSPACE
+        rm -rf *
 
   build-upload-dev:
     needs: test

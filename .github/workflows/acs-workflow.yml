@@ -21,7 +21,11 @@ jobs:
   #   - name: Run tests
   #     run: |
   #       cd src/acs
-  #       ./test.sh
+  #       sh test.sh
+    # - name: Cleanup
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     rm -rf *
 
   build-upload-dev:
     # needs: test
