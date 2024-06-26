@@ -1,4 +1,4 @@
-FROM python:3.12.2-slim-bullseye as builder
+FROM python:3.12.4-slim-bullseye as builder
 
 RUN apt update -y && \
     apt upgrade -y && \
@@ -12,7 +12,7 @@ COPY /reqs/* .
 RUN pip3 install -r requirements.txt
 
 
-FROM python:3.12.2-slim-bullseye
+FROM python:3.12.4-slim-bullseye
 
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
