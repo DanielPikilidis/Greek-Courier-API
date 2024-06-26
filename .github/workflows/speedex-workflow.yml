@@ -22,9 +22,7 @@ jobs:
     - name: Run tests
       run: |
         cd src/speedex
-        pwd
-        ls -la
-        ./test.sh
+        sh test.sh
 
   build-upload-dev:
     needs: test
