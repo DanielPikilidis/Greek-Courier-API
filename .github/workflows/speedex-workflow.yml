@@ -21,9 +21,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Run tests
       run: |
+        cd src/speedex
         pwd
         ls -la
-        cd src/speedex
         ./test.sh
 
   build-upload-dev:
