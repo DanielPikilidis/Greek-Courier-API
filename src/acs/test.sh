@@ -1,6 +1,7 @@
 #!/bin/bash
 
 pip3 install -r reqs/requirements.txt
+export PATH=$PATH:~/.local/bin
 playwright install --with-deps chromium
 
 # unittest discover is complete garbage, like I can't even specify a directory... so I have to do this
