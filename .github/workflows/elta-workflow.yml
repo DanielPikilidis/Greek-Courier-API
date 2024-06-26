@@ -21,7 +21,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Run tests
       run: |
-        chmod -R 777 * 
+        chmod -R 777 * .github
         cd src/elta
         sh test.sh
 
