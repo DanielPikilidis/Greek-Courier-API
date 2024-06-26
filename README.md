@@ -46,29 +46,16 @@ Track many packages at the same time (up to 20 except for elta where its 5):<br>
 The courier options are acs, couriercenter, easymail, elta, skroutz, speedex, and geniki.
 
 ## Installation
-These instructions will also show how to install microk8s. If you already have Kubernetes environment then
-you can skip to step 4.
+To install this one your own cluster you will need a functioning ingress controller. I'm using Traefik, but you can use whatever you want. You will also need certmanager
+for the TLS certificates. You can follow this guide from Techno Tim: https://www.youtube.com/watch?v=G4CmbYL9UPg
 
-1) Install microk8s.<br>
-```
-sudo snap install microk8s --classic
-```
-You will obviously need snap for this.
-
-2) Configure MetalLB
-```
-sudo microk8s enable metallb
-```
-And enter the IP range you want. For example 10.10.0.0/16 (2^16 IPs)
-
-3) (Optional) If you need vertical pod autoscaling you will also have to set that up.
-4) Clone the repository
+1) Clone the repository
 ```
 git clone https://github.com/DanielPikilidis/Greek-Courier-API
 cd Greek-Courier-API
 ```
-6) Configure everything (scroll down for details)
-7) If you did everything correct then the following command should have everything up and running:
+2) Configure everything (scroll down for details)
+3) If you did everything correct then the following command should have everything up and running:
 
 ```
 microk8s helm3 install helm/ courier-api -n courier-api --create-namespace
@@ -80,17 +67,15 @@ Note: the `--create-namespace` is only required the first time and should be rem
 All configuration is made in the values.yaml files.
 
 - helm/values.yaml:
-  - `global.node_port`: This is the port that will be opened on the host (or hosts) and will be used to access
-  the API.
   - `global.api_port`, `global.tracker_port` and `global.pm_port`: These are internal ports that don't really affect the application.
+  - `global.ingress.url`: The domain name that the API will be accessible from.
+  - `global.ingress.tls.enabled`: Enable or disable TLS.
+  - `global.ingress.tls.secretName`: The name of the secret that contains the certmanager TLS certificate.
   - `global.redis.enabled`: Enables / Disables the Redis database
   - `global.redis.address`, `global.redis.port` and `global.redis.password`: <u>DO NOT</u> change them. I'm planning to make the Redis
   database more configurable later, but if you change them now things will break.
   - `global.redis.cache_duration`: For how many minutes should the IDs be cached.
 - helm/proxy-manager/values.yaml:
-  - `pm.enabled`: Enables / Disables the proxy manager. By default this is false and the trackers won't use proxies.
-  - `pm.base64_proxies`: With this you pass the a JSON proxy list encoded in base64. The JSON should have the
-  following format:
   ```json
   [
     {
@@ -125,7 +110,7 @@ All configuration is made in the values.yaml files.
 
 
 ## How is this hosted
-Right now this is hosted on a high availability Talos cluster. The workers have a total 12 cores and 24GB RAM. I'm not renting
+Right now this is hosted on a high availability RKE2 cluster. The workers have a total 12 cores and 24GB RAM. I'm not renting
 this, but instead using my own server that has a lot of unused resources. Obviously the resource usage is much lower than
 what I have allocated, this cluster is also used for other purposes. Currently it's using about 700mb of RAM. There is a traefik
 reverse proxy that is used to load balance the requests between these 3 nodes. 
@@ -138,12 +123,7 @@ TLDR: It's self-hosted and will not have 100% up-time, so don't start opening is
 
 ## TODO
 There are a few changes that I want to make whenever I have time:<br>
-- Make this deployable on a cloud provider like AWS. I haven't tested it but I don't expect this to
-work with a cloud provider. Will probably need an ingress controller instead of node port.
-- Find a better way to pass a proxy list to the proxy manager.
 - Improve the Redis deployment configuration.
-- Setup a high availability Redis deployment.
-- Setup fluentbit
 - Setup prometheus and collect stats.
 - Change the domain name. Not really a fan of using a personal domain name for this.
 
