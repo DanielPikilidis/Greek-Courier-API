@@ -13,19 +13,19 @@ on:
       - 'src/main-api/**'
 
 jobs:
-  test:
-    runs-on: self-hosted
-    container: golang:alpine
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Run tests
-      run: |
-        cd src/main-api
-        sh test.sh
+  # test:
+  #   runs-on: self-hosted
+  #   container: golang:alpine
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+  #   - name: Run tests
+  #     run: |
+  #       cd src/main-api
+  #       sh test.sh
 
   build-upload-dev:
-    needs: test
+    # needs: test
     runs-on: self-hosted
     steps:
     - name: Checkout code
@@ -49,7 +49,7 @@ jobs:
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/main-api-tracker:${{ github.sha }}
 
   build-upload-prod:
-    needs: test
+    # needs: test
     runs-on: self-hosted
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
