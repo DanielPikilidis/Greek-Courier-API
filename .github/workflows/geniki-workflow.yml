@@ -22,7 +22,7 @@ jobs:
     - name: Run tests
       run: |
         cd src/geniki
-        ./test.sh
+        sh test.sh
 
   build-upload-dev:
     needs: test
