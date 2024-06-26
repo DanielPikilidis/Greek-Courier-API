@@ -16,6 +16,6 @@ USER 1001
 
 WORKDIR /main-api
 
-COPY --from=builder /main-api/main-api /main-api
+COPY --from=builder /main-api/main-api /main-api 
 
 CMD [ "./main-api" ]
