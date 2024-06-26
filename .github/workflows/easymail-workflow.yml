@@ -15,6 +15,7 @@ on:
 jobs:
   test:
     runs-on: self-hosted
+    container: python:3.12.2-alpine3.19
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
