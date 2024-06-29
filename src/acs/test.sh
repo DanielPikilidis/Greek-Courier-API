@@ -14,4 +14,4 @@ for file in $(find . -name "*_test.py"); do
     fi
 done
 
-rm -rf src/__pycache__/
+rm -rf src/__pycache__/ 
