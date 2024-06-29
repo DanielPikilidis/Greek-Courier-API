@@ -26,9 +26,7 @@ jobs:
     - name: Cleanup
       run: |
         cd $GITHUB_WORKSPACE
-        ls -al
         rm -rf * .github
-        ls -al
 
   build-upload-dev:
     needs: test

@@ -17,7 +17,7 @@ jobs:
   #   runs-on: self-hosted
   #   steps:
   #   - name: Checkout code
-  #     uses: actions/checkout@v2
+  #     uses: actions/checkout@v3
   #   - name: Run tests
   #     run: |
   #       cd src/acs
@@ -25,7 +25,7 @@ jobs:
     # - name: Cleanup
     #   run: |
     #     cd $GITHUB_WORKSPACE
-    #     rm -rf *
+    #     rm -rf * .github
 
   build-upload-dev:
     # needs: test
@@ -45,7 +45,7 @@ jobs:
 
     - name: Build and push
       id: docker_build
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v6
       with:
         context: ./src/acs
         push: true
@@ -57,7 +57,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
