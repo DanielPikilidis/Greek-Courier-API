@@ -18,4 +18,4 @@ WORKDIR /main-api
 
 COPY --from=builder /main-api/main-api /main-api 
 
-CMD [ "./main-api" ]
+CMD [ "./main-api" ] 
