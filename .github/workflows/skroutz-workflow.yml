@@ -55,7 +55,7 @@ jobs:
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/skroutz-tracker:${{ github.sha }}
 
   build-upload-prod:
-    needs: test
+    needs: build-upload-dev
     runs-on: self-hosted
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
